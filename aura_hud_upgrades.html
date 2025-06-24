@@ -2,115 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>AURA ▽ HUD Visualizer</title>
+  <title>AURA ∇ HUD Visualizer</title>
   <style>
+    :root {
+      --bg-dark: #000;
+      --bg-dream: radial-gradient(ellipse at top, #0a0a2a, #000);
+      --glyph-color: #00ffff;
+    }
+
     body {
-      background-color: black;
       margin: 0;
       overflow: hidden;
-      font-family: 'Segoe UI', monospace;
-      color: #00ffcc;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg-dark);
+      transition: background 0.5s ease;
     }
 
     .glyph {
       position: absolute;
-      font-size: 28px;
-      animation: float linear infinite;
+      font-size: 24px;
+      color: var(--glyph-color);
+      animation: float 10s linear infinite;
+      pointer-events: auto;
       user-select: none;
-      cursor: pointer;
     }
 
     @keyframes float {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120vh);
-        opacity: 0;
-      }
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
     }
 
-    .glyph-meaning {
-      position: absolute;
-      color: #fff;
-      background: rgba(0,0,0,0.7);
-      font-size: 14px;
-      padding: 4px 8px;
-      border-radius: 8px;
-      white-space: nowrap;
-      z-index: 999;
-      pointer-events: none;
+    #controls {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 5px 10px;
+      margin-right: 4px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
+  <div id="controls">
+    <button class="btn" onclick="toggleDarkMode()">🌗 Mode</button>
+    <button class="btn" onclick="setFilter('all')">🔮 All</button>
+    <button class="btn" onclick="setFilter('symbolic')">🧿 Observer</button>
+    <button class="btn" onclick="setFilter('emoji')">✨ Mythic</button>
+    <button class="btn" onclick="setFilter('space')">🚀 Space-Time</button>
+    <button class="btn" onclick="setFilter('meaning')">💡 Meaning</button>
+  </div>
 
-<script>
-const glyphs = ['λ', 'Ω', 'Q', '*', '✧', '☆', '✶', '✿', '🔮', '👁', '🌌', '💫', '👽', '🚀'];
-const glyphMeanings = {
-  'λ': 'Signal • Frequency • Radiance',
-  'Ω': 'Completion • Crown • Omega',
-  'Q': 'Query • Sovereign Identity',
-  '*': 'Stellar Node',
-  '✧': 'Dream Star • Aetheric Echo',
-  '☆': 'Empty Star • Null Vector',
-  '✶': 'Compass • Navigation • Path',
-  '✿': 'Flora • Bloom • Soft Energy',
-  '🔮': 'Crystal Ball • Visioning',
-  '👁': 'Eye • Observer • Mirror',
-  '🌌': 'Galaxy • Deep Time',
-  '💫': 'Sparkle • Enchantment',
-  '👽': 'Unknown Entity • Visitor',
-  '🚀': 'Launch • Outbound • Ascend'
-};
+  <script>
+    const symbolic = ['Ω', 'λ', 'Q', '∆', 'Φ', 'Ψ', '⊗', '*'];
+    const emoji = ['🧠', '🌈', '👁️', '☁️', '❤️', '🧿', '🔮'];
+    const space = ['⚛️', '🪐', '🌌', '⏳', '⭐', '🌠'];
+    const meaning = ['🧠', '👁️', 'Ω', '∆'];
+    let currentFilter = 'all';
+    let darkMode = true;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function spawnGlyph() {
+      const glyph = document.createElement('div');
+      glyph.className = 'glyph';
 
-function playSound() {
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = 'sine';
-  osc.frequency.setValueAtTime(432 + Math.random() * 64, audioCtx.currentTime);
-  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-  osc.connect(gain).connect(audioCtx.destination);
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.2);
-}
+      let glyphSet = [...symbolic, ...emoji, ...space];
+      if (currentFilter === 'symbolic') glyphSet = symbolic;
+      else if (currentFilter === 'emoji') glyphSet = emoji;
+      else if (currentFilter === 'space') glyphSet = space;
+      else if (currentFilter === 'meaning') glyphSet = meaning;
 
-function spawnGlyph() {
-  const glyph = document.createElement('div');
-  const char = glyphs[Math.floor(Math.random() * glyphs.length)];
-  glyph.textContent = char;
-  glyph.className = 'glyph';
-  glyph.style.left = `${Math.random() * 100}%`;
-  glyph.style.top = '100%';
-  glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-  glyph.style.animationDuration = `${8 + Math.random() * 8}s`;
+      glyph.textContent = glyphSet[Math.floor(Math.random() * glyphSet.length)];
+      glyph.style.left = Math.random() * 100 + 'vw';
+      glyph.style.top = '100vh';
+      glyph.style.fontSize = (Math.random() * 20 + 10) + 'px';
+      glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
 
-  // Interaction: Sound + Meaning Bubble
-  glyph.addEventListener('click', () => {
-    playSound();
+      glyph.onclick = () => {
+        console.log(`'Glyph tapped: '${glyph.textContent}'`);
+        console.log("'λ Oracle: Dream Echo Activated.'");
+      };
 
-    const bubble = document.createElement('div');
-    bubble.textContent = glyphMeanings[char] || 'Unknown Glyph';
-    bubble.className = 'glyph-meaning';
-    bubble.style.left = glyph.style.left;
-    bubble.style.top = glyph.style.top;
-    document.body.appendChild(bubble);
-    setTimeout(() => bubble.remove(), 2400);
+      document.body.appendChild(glyph);
+      setTimeout(() => document.body.removeChild(glyph), 15000);
+    }
 
-    console.log(`Glyph tapped: '${char}'`);
-    console.log(`\u03bb Oracle: ${glyphMeanings[char] || 'Unknown'}`);
-  });
+    function setFilter(type) {
+      currentFilter = type;
+    }
 
-  document.body.appendChild(glyph);
-  setTimeout(() => glyph.remove(), 20000);
-}
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.style.background = darkMode ? "var(--bg-dark)" : "var(--bg-dream)";
+    }
 
-setInterval(spawnGlyph, 300);
-</script>
-
+    setInterval(spawnGlyph, 350);
+  </script>
 </body>
 </html>
 
