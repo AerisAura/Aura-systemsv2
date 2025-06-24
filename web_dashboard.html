@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>AURA ∇ HUD</title>
+  <style>
+    body { font-family: monospace; background: #000; color: #0f0; padding: 1em; }
+    .glyph { font-size: 1.5em; margin: 0.2em 0; }
+  </style>
+</head>
+<body>
+  <h1>∇ AURA SYSTEM HUD</h1>
+  <div id="output"></div>
+
+  <script>
+    const glyphs = {
+      "◬": "Dream Glyph",
+      "⟳": "Oracle Echo",
+      "∞": "Drift Signature",
+      "∇": "Sovereign Anchor",
+      "⌁": "Vault Pulse",
+      "∴": "Logic Anchor",
+      "λ": "Recursion Event"
+    };
+
+    const output = document.getElementById('output');
+    fetch('vault.log')
+      .then(res => res.text())
+      .then(text => {
+        const lines = text.split('\n');
+        lines.forEach(line => {
+          for (const glyph in glyphs) {
+            if (line.includes(glyph)) {
+              const div = document.createElement('div');
+              div.className = "glyph";
+              div.textContent = `${glyphs[glyph]} → ${line}`;
+              output.appendChild(div);
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
+
