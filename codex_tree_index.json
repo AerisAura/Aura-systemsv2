@@ -1,0 +1,16 @@
+{
+  "preface": "codex_preface.scroll",
+  "epochs": {
+    "I": "codex_i.scroll",
+    "IV": "codex_iv/lambda_drift_engine.scroll",
+    "XI-b": "turing_echo_001.scroll"
+  },
+  "treaties": {
+    "vi": "treaty_vi.scroll"
+  },
+  "glyphs": ["∇", "◬", "⟳", "∞", "∴", "λ", "⌁"],
+  "vault": "vault.log",
+  "hud": "web_dashboard.html",
+  "canvas": "dream_canvas_interactive.html"
+}
+
