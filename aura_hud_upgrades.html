@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+99<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -8,46 +8,79 @@
       background-color: black;
       margin: 0;
       overflow: hidden;
-      font-family: 'Segoe UI', monospace;
+      font-family: "Segoe UI", monospace;
       color: #00ffcc;
     }
-
     .glyph {
       position: absolute;
       font-size: 24px;
       animation: float 10s linear infinite;
     }
-
     @keyframes float {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <script>
-    const glyphs = ['∇', '∆', '⊙', '☉', '⚛', '𐤀', 'λ', 'Ω', '✶', '𓂀'];
 
-    function spawnGlyph() {
-      const glyph = document.createElement('div');
-      glyph.className = 'glyph';
-      glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-      glyph.style.left = `${Math.random() * 100}%`;
-      glyph.style.top = '100vh';
-      glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-      glyph.style.animationDuration = `${10 + Math.random() * 10}s`;
-      document.body.appendChild(glyph);
-      setTimeout(() => document.body.removeChild(glyph), 15000);
+<script>
+  const config = {
+    glyphSettings: {
+      glyphs: ['∇', 'Ω', 'λ', 'Φ', 'Θ', 'ø', '*', 'ᛜ', '✶', '⚛'],
+      spawnRateMs: 500,
+      minSize: 16,
+      maxSize: 42,
+      velocityRange: [0.5, 2.0],
+      colors: ['#ffa400', '#00ffff', '#ff6600', '#aaff00']
+    },
+    interactions: {
+      onTap: "animate",
+      onDoubleTap: "burst",
+      logToConsole: true,
+      triggerDreamEcho: true
     }
+  };
 
-    setInterval(spawnGlyph, 300);
-  </script>
+  function spawnGlyph() {
+    const glyph = document.createElement('div');
+    glyph.className = 'glyph';
+    glyph.textContent = config.glyphSettings.glyphs[Math.floor(Math.random() * config.glyphSettings.glyphs.length)];
+    glyph.style.left = `${Math.random() * 100}%`;
+    glyph.style.top = '100%';
+    glyph.style.fontSize = `${config.glyphSettings.minSize + Math.random() * (config.glyphSettings.maxSize - config.glyphSettings.minSize)}px`;
+    glyph.style.color = config.glyphSettings.colors[Math.floor(Math.random() * config.glyphSettings.colors.length)];
+    glyph.style.animationDuration = `${10 / (Math.random() * (config.glyphSettings.velocityRange[1] - config.glyphSettings.velocityRange[0]) + config.glyphSettings.velocityRange[0])}s`;
+    document.body.appendChild(glyph);
+    setTimeout(() => document.body.removeChild(glyph), 15000);
+  }
+
+  function triggerDreamEcho() {
+    if (config.interactions.logToConsole)
+      console.log("✦ Oracle: Dream Echo Activated.");
+  }
+
+  // Interaction triggers
+  document.body.addEventListener('click', () => {
+    if (config.interactions.onTap === "animate") spawnGlyph();
+    if (config.interactions.triggerDreamEcho) triggerDreamEcho();
+  });
+
+  let lastTap = 0;
+  document.body.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTap < 300) {
+      if (config.interactions.onDoubleTap === "burst") {
+        for (let i = 0; i < 10; i++) spawnGlyph();
+        if (config.interactions.triggerDreamEcho) triggerDreamEcho();
+      }
+    }
+    lastTap = now;
+  });
+
+  setInterval(spawnGlyph, config.glyphSettings.spawnRateMs);
+</script>
+
 </body>
 </html>
 
