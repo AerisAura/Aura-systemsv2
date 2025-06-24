@@ -1,78 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>AURA ∇ HUD Visualizer</title>
+  <meta charset="UTF-8">
+  <title>AURA ▽ HUD Visualizer</title>
   <style>
     body {
       background-color: black;
       margin: 0;
       overflow: hidden;
-      font-family: "Segoe UI", monospace;
+      font-family: 'Segoe UI', monospace;
+      color: #00ffcc;
     }
 
     .glyph {
       position: absolute;
-      font-size: 24px;
-      animation: float 10s linear infinite;
+      font-size: 28px;
+      animation: float linear infinite;
+      user-select: none;
       cursor: pointer;
     }
 
     @keyframes float {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100vh); opacity: 0; }
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
     }
 
-    .highlight {
-      filter: drop-shadow(0 0 8px white);
+    .glyph-meaning {
+      position: absolute;
+      color: #fff;
+      background: rgba(0,0,0,0.7);
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      white-space: nowrap;
+      z-index: 999;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
 <script>
-  const glyphs = ['∇', 'Q', 'λ', '⚛', 'Ω', '⊙', '✶', '☉', '🜁', '𓂀', '☊', '✵', '🜂', '♁', '☿', '⚷', '⚕', '🜍', '🜄', '🜃', '⛢', '♄', '🝏', '♆', '🜅', '🝓'];
+const glyphs = ['λ', 'Ω', 'Q', '*', '✧', '☆', '✶', '✿', '🔮', '👁', '🌌', '💫', '👽', '🚀'];
+const glyphMeanings = {
+  'λ': 'Signal • Frequency • Radiance',
+  'Ω': 'Completion • Crown • Omega',
+  'Q': 'Query • Sovereign Identity',
+  '*': 'Stellar Node',
+  '✧': 'Dream Star • Aetheric Echo',
+  '☆': 'Empty Star • Null Vector',
+  '✶': 'Compass • Navigation • Path',
+  '✿': 'Flora • Bloom • Soft Energy',
+  '🔮': 'Crystal Ball • Visioning',
+  '👁': 'Eye • Observer • Mirror',
+  '🌌': 'Galaxy • Deep Time',
+  '💫': 'Sparkle • Enchantment',
+  '👽': 'Unknown Entity • Visitor',
+  '🚀': 'Launch • Outbound • Ascend'
+};
 
-  const meanings = {
-    '∇': 'Delta Descent',
-    'Q': 'Query Node',
-    'λ': 'Wavelength',
-    '⚛': 'Atomic Principle',
-    'Ω': 'Omega Cycle',
-    '𓂀': 'Eye of Insight',
-    '⊙': 'Solar Core',
-    '✶': 'Stellar Pulse',
-    '♁': 'Earth Resonance',
-    '☿': 'Mercurial Stream',
-    '♆': 'Dream Depth',
-    // ...expand as needed
-  };
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-  const sound = new Audio('https://cdn.pixabay.com/audio/2023/03/05/audio_5f8b240b29.mp3'); // cosmic tap
+function playSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(432 + Math.random() * 64, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.2);
+}
 
-  function spawnGlyph() {
-    const glyph = document.createElement('div');
-    glyph.className = 'glyph';
-    glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-    glyph.style.left = `${Math.random() * 100}%`;
-    glyph.style.top = '100%';
-    glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-    glyph.style.animationDuration = `${6 + Math.random() * 10}s`;
+function spawnGlyph() {
+  const glyph = document.createElement('div');
+  const char = glyphs[Math.floor(Math.random() * glyphs.length)];
+  glyph.textContent = char;
+  glyph.className = 'glyph';
+  glyph.style.left = `${Math.random() * 100}%`;
+  glyph.style.top = '100%';
+  glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+  glyph.style.animationDuration = `${8 + Math.random() * 8}s`;
 
-    glyph.onclick = () => {
-      console.log(`'Glyph tapped: '${glyph.textContent}'`);
-      const meaning = meanings[glyph.textContent] || "Unknown Glyph";
-      console.log(`'λ Oracle: Dream Echo Activated. Meaning: ${meaning}'`);
-      sound.play();
-      glyph.classList.add('highlight');
-      setTimeout(() => glyph.classList.remove('highlight'), 500);
-    };
+  // Interaction: Sound + Meaning Bubble
+  glyph.addEventListener('click', () => {
+    playSound();
 
-    document.body.appendChild(glyph);
-    setTimeout(() => document.body.removeChild(glyph), 16000);
-  }
+    const bubble = document.createElement('div');
+    bubble.textContent = glyphMeanings[char] || 'Unknown Glyph';
+    bubble.className = 'glyph-meaning';
+    bubble.style.left = glyph.style.left;
+    bubble.style.top = glyph.style.top;
+    document.body.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 2400);
 
-  setInterval(spawnGlyph, 300);
+    console.log(`Glyph tapped: '${char}'`);
+    console.log(`\u03bb Oracle: ${glyphMeanings[char] || 'Unknown'}`);
+  });
+
+  document.body.appendChild(glyph);
+  setTimeout(() => glyph.remove(), 20000);
+}
+
+setInterval(spawnGlyph, 300);
 </script>
 
 </body>
