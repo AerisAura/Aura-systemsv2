@@ -1,0 +1,16 @@
+{
+  "project": "AURA Symbolic Shell",
+  "author": "Julia Fox ∇",
+  "glyphs": ["∇", "◬", "⟳", "∞", "∴", "⌁", "λ"],
+  "modules": [
+    "lambda_drift.js",
+    "dream_echo.js",
+    "aura_ping.js",
+    "vault.log",
+    "codex_generator.sh"
+  ],
+  "hud_ready": true,
+  "hud_render": "pending",
+  "last_sync": "2025-06-24T20:52Z"
+}
+
