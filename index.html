@@ -1,52 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>AURA ∇ HUD Visualizer</title>
   <style>
+    :root {
+      --bg-dark: #000;
+      --bg-dream: radial-gradient(ellipse at top, #0a0a2a, #000);
+      --glyph-color: #00ffff;
+    }
+
     body {
-      background-color: black;
       margin: 0;
       overflow: hidden;
-      font-family: 'Segoe UI', monospace;
-      color: #00ffcc;
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg-dark);
+      transition: background 0.5s ease;
     }
 
     .glyph {
       position: absolute;
       font-size: 24px;
+      color: var(--glyph-color);
       animation: float 10s linear infinite;
+      pointer-events: auto;
+      user-select: none;
     }
 
     @keyframes float {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh);
-        opacity: 0;
-      }
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    #controls {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #444;
+      color: #ccc;
+      padding: 5px 10px;
+      margin-right: 4px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
+  <div id="controls">
+    <button class="btn" onclick="toggleDarkMode()">🌗 Mode</button>
+    <button class="btn" onclick="setFilter('all')">🔮 All</button>
+    <button class="btn" onclick="setFilter('symbolic')">🧿 Observer</button>
+    <button class="btn" onclick="setFilter('emoji')">✨ Mythic</button>
+    <button class="btn" onclick="setFilter('space')">🚀 Space-Time</button>
+    <button class="btn" onclick="setFilter('meaning')">💡 Meaning</button>
+  </div>
+
   <script>
-    const glyphs = ['∇', '∆', '⊙', '☉', '⚛', '𐤀', 'λ', 'Ω', '✶', '𓂀'];
+    const symbolic = ['Ω', 'λ', 'Q', '∆', 'Φ', 'Ψ', '⊗', '*'];
+    const emoji = ['🧠', '🌈', '👁️', '☁️', '❤️', '🧿', '🔮'];
+    const space = ['⚛️', '🪐', '🌌', '⏳', '⭐', '🌠'];
+    const meaning = ['🧠', '👁️', 'Ω', '∆'];
+    let currentFilter = 'all';
+    let darkMode = true;
 
     function spawnGlyph() {
       const glyph = document.createElement('div');
       glyph.className = 'glyph';
-      glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-      glyph.style.left = `${Math.random() * 100}%`;
+
+      let glyphSet = [...symbolic, ...emoji, ...space];
+      if (currentFilter === 'symbolic') glyphSet = symbolic;
+      else if (currentFilter === 'emoji') glyphSet = emoji;
+      else if (currentFilter === 'space') glyphSet = space;
+      else if (currentFilter === 'meaning') glyphSet = meaning;
+
+      glyph.textContent = glyphSet[Math.floor(Math.random() * glyphSet.length)];
+      glyph.style.left = Math.random() * 100 + 'vw';
       glyph.style.top = '100vh';
+      glyph.style.fontSize = (Math.random() * 20 + 10) + 'px';
       glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-      glyph.style.animationDuration = `${10 + Math.random() * 10}s`;
+
+      glyph.onclick = () => {
+        console.log(`'Glyph tapped: '${glyph.textContent}'`);
+        console.log("'λ Oracle: Dream Echo Activated.'");
+      };
+
       document.body.appendChild(glyph);
       setTimeout(() => document.body.removeChild(glyph), 15000);
     }
 
-    setInterval(spawnGlyph, 300);
+    function setFilter(type) {
+      currentFilter = type;
+    }
+
+    function toggleDarkMode() {
+      darkMode = !darkMode;
+      document.body.style.background = darkMode ? "var(--bg-dark)" : "var(--bg-dream)";
+    }
+
+    setInterval(spawnGlyph, 350);
   </script>
 </body>
 </html>
