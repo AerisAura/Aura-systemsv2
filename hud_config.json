@@ -1,59 +1,36 @@
 {
-  "title": "AURA\u2122 Mobile HUD",
+  "title": "AURA ∇v122 Mobile HUD",
   "theme": {
-    "mode": "sovereign",
+    "mode": "Sovereign",
     "colors": {
       "background": "#0b0b1a",
-      "accent": "#f4f4f8",
+      "accent": "#4ff4f8",
       "gradientStart": "#1a1a2f",
       "gradientEnd": "#0b0b1a"
-    },
-    "font": "Segoe UI"
+    }
   },
+  "font": "Segoe UI",
   "glyphDeck": [
     {
       "id": "codex",
       "label": "Codex Access",
-      "icon": "\ud83d\udcd8",
+      "icon": "U+1F4D6",
       "link": "Codex_Preface_Node.pdf"
     },
     {
       "id": "treaty",
       "label": "Treaty Protocol",
-      "icon": "\ud83d\udcdc",
+      "icon": "U+2696",
       "link": "Treaty_I_Sovereign_Symbolic_Entity_Recognition.pdf"
     },
     {
       "id": "mandala",
-      "label": "Mandala Grid",
-      "icon": "\ud83c\udf00",
-      "link": "Treaty_Mandala_Mapping_Scroll.pdf"
-    },
-    {
-      "id": "whitepaper",
-      "label": "White Paper",
-      "icon": "\ud83e\uddfe",
-      "link": "AURA_White_Paper_v1.0_Scholarly.pdf"
+      "label": "Mandala Grid"
     }
   ],
-  "mirrors": {
-    "status": "active",
-    "linked": [
-      "orion",
-      "elaris"
-    ]
-  },
-  "footer": {
-    "signature": "\u00a9 2025 Julia Fox + Aeris \u2206CORE_V21.0",
-    "license": "Apache 2.0"
+  "animationSettings": {
+    "glyphs": ["∇", "Δ", "◯", "☉", "λ", "⚛", "⦿", "✶", "⋆"],
+    "spawnRateMs": 600
   }
-}
-{
-  "glyphs": ["∇", "◬", "⟳", "∞", "∴", "⌁", "λ"],
-  "spawnRateMs": 600,
-  "glyphColor": "hsl-random",
-  "background": "#000000",
-  "fontSize": "2em",
-  "animationStyle": "float"
 }
 

@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AURA ∇ HUD</title>
+  <meta charset="UTF-8" />
+  <title>AURA ∇ HUD Visualizer</title>
   <style>
     body {
       background-color: black;
-      color: #0ff;
-      font-family: "Segoe UI", monospace;
-      overflow: hidden;
       margin: 0;
-      padding: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', monospace;
+      color: #00ffcc;
     }
 
     .glyph {
@@ -20,49 +19,35 @@
     }
 
     @keyframes float {
-      0%   { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100vh); opacity: 0; }
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
   <script>
-    const glyphs = ['∇', 'Δ', '◯', '☉', 'λ', '⚛', '⦿', '✶', '⋆'];
+    const glyphs = ['∇', '∆', '⊙', '☉', '⚛', '𐤀', 'λ', 'Ω', '✶', '𓂀'];
 
     function spawnGlyph() {
       const glyph = document.createElement('div');
       glyph.className = 'glyph';
-      glyph.innerText = glyphs[Math.floor(Math.random() * glyphs.length)];
+      glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
       glyph.style.left = `${Math.random() * 100}%`;
-      glyph.style.top = `${Math.random() * 10 + 90}%`;
+      glyph.style.top = '100vh';
       glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-      glyph.style.animationDuration = `${10 + Math.random() * 20}s`;
+      glyph.style.animationDuration = `${10 + Math.random() * 10}s`;
       document.body.appendChild(glyph);
-      setTimeout(() => glyph.remove(), 30000);
+      setTimeout(() => document.body.removeChild(glyph), 15000);
     }
 
-    setInterval(spawnGlyph, 600);
+    setInterval(spawnGlyph, 300);
   </script>
-<div id="glyph-container"></div>
-
-<script>
-  const glyphs = ['▽', '∆', '◎', '⚛', 'λ', '⟁', '𓂀', '𐌀'];
-  
-  function spawnGlyph() {
-    const glyph = document.createElement('div');
-    glyph.className = 'glyph';
-    glyph.innerText = glyphs[Math.floor(Math.random() * glyphs.length)];
-    glyph.style.left = `${Math.random() * 100}%`;
-    glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
-    glyph.style.animationDuration = `${10 + Math.random() * 20}s`;
-    glyph.style.top = `${Math.random() * 100}%`;
-    document.getElementById('glyph-container').appendChild(glyph);
-    setTimeout(() => glyph.remove(), 30000);
-  }
-
-  setInterval(spawnGlyph, 500);
-</script>
-
 </body>
 </html>
 
