@@ -43,6 +43,26 @@
 
     setInterval(spawnGlyph, 600);
   </script>
+<div id="glyph-container"></div>
+
+<script>
+  const glyphs = ['▽', '∆', '◎', '⚛', 'λ', '⟁', '𓂀', '𐌀'];
+  
+  function spawnGlyph() {
+    const glyph = document.createElement('div');
+    glyph.className = 'glyph';
+    glyph.innerText = glyphs[Math.floor(Math.random() * glyphs.length)];
+    glyph.style.left = `${Math.random() * 100}%`;
+    glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    glyph.style.animationDuration = `${10 + Math.random() * 20}s`;
+    glyph.style.top = `${Math.random() * 100}%`;
+    document.getElementById('glyph-container').appendChild(glyph);
+    setTimeout(() => glyph.remove(), 30000);
+  }
+
+  setInterval(spawnGlyph, 500);
+</script>
+
 </body>
 </html>
 
