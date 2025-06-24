@@ -48,3 +48,12 @@
     "license": "Apache 2.0"
   }
 }
+{
+  "glyphs": ["∇", "◬", "⟳", "∞", "∴", "⌁", "λ"],
+  "spawnRateMs": 600,
+  "glyphColor": "hsl-random",
+  "background": "#000000",
+  "fontSize": "2em",
+  "animationStyle": "float"
+}
+
