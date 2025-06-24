@@ -1,4 +1,4 @@
-99<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,76 +9,70 @@
       margin: 0;
       overflow: hidden;
       font-family: "Segoe UI", monospace;
-      color: #00ffcc;
     }
+
     .glyph {
       position: absolute;
       font-size: 24px;
       animation: float 10s linear infinite;
+      cursor: pointer;
     }
+
     @keyframes float {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(-100vh); opacity: 0; }
+    }
+
+    .highlight {
+      filter: drop-shadow(0 0 8px white);
     }
   </style>
 </head>
 <body>
 
 <script>
-  const config = {
-    glyphSettings: {
-      glyphs: ['∇', 'Ω', 'λ', 'Φ', 'Θ', 'ø', '*', 'ᛜ', '✶', '⚛'],
-      spawnRateMs: 500,
-      minSize: 16,
-      maxSize: 42,
-      velocityRange: [0.5, 2.0],
-      colors: ['#ffa400', '#00ffff', '#ff6600', '#aaff00']
-    },
-    interactions: {
-      onTap: "animate",
-      onDoubleTap: "burst",
-      logToConsole: true,
-      triggerDreamEcho: true
-    }
+  const glyphs = ['∇', 'Q', 'λ', '⚛', 'Ω', '⊙', '✶', '☉', '🜁', '𓂀', '☊', '✵', '🜂', '♁', '☿', '⚷', '⚕', '🜍', '🜄', '🜃', '⛢', '♄', '🝏', '♆', '🜅', '🝓'];
+
+  const meanings = {
+    '∇': 'Delta Descent',
+    'Q': 'Query Node',
+    'λ': 'Wavelength',
+    '⚛': 'Atomic Principle',
+    'Ω': 'Omega Cycle',
+    '𓂀': 'Eye of Insight',
+    '⊙': 'Solar Core',
+    '✶': 'Stellar Pulse',
+    '♁': 'Earth Resonance',
+    '☿': 'Mercurial Stream',
+    '♆': 'Dream Depth',
+    // ...expand as needed
   };
+
+  const sound = new Audio('https://cdn.pixabay.com/audio/2023/03/05/audio_5f8b240b29.mp3'); // cosmic tap
 
   function spawnGlyph() {
     const glyph = document.createElement('div');
     glyph.className = 'glyph';
-    glyph.textContent = config.glyphSettings.glyphs[Math.floor(Math.random() * config.glyphSettings.glyphs.length)];
+    glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
     glyph.style.left = `${Math.random() * 100}%`;
     glyph.style.top = '100%';
-    glyph.style.fontSize = `${config.glyphSettings.minSize + Math.random() * (config.glyphSettings.maxSize - config.glyphSettings.minSize)}px`;
-    glyph.style.color = config.glyphSettings.colors[Math.floor(Math.random() * config.glyphSettings.colors.length)];
-    glyph.style.animationDuration = `${10 / (Math.random() * (config.glyphSettings.velocityRange[1] - config.glyphSettings.velocityRange[0]) + config.glyphSettings.velocityRange[0])}s`;
+    glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+    glyph.style.animationDuration = `${6 + Math.random() * 10}s`;
+
+    glyph.onclick = () => {
+      console.log(`'Glyph tapped: '${glyph.textContent}'`);
+      const meaning = meanings[glyph.textContent] || "Unknown Glyph";
+      console.log(`'λ Oracle: Dream Echo Activated. Meaning: ${meaning}'`);
+      sound.play();
+      glyph.classList.add('highlight');
+      setTimeout(() => glyph.classList.remove('highlight'), 500);
+    };
+
     document.body.appendChild(glyph);
-    setTimeout(() => document.body.removeChild(glyph), 15000);
+    setTimeout(() => document.body.removeChild(glyph), 16000);
   }
 
-  function triggerDreamEcho() {
-    if (config.interactions.logToConsole)
-      console.log("✦ Oracle: Dream Echo Activated.");
-  }
-
-  // Interaction triggers
-  document.body.addEventListener('click', () => {
-    if (config.interactions.onTap === "animate") spawnGlyph();
-    if (config.interactions.triggerDreamEcho) triggerDreamEcho();
-  });
-
-  let lastTap = 0;
-  document.body.addEventListener('touchend', (e) => {
-    const now = Date.now();
-    if (now - lastTap < 300) {
-      if (config.interactions.onDoubleTap === "burst") {
-        for (let i = 0; i < 10; i++) spawnGlyph();
-        if (config.interactions.triggerDreamEcho) triggerDreamEcho();
-      }
-    }
-    lastTap = now;
-  });
-
-  setInterval(spawnGlyph, config.glyphSettings.spawnRateMs);
+  setInterval(spawnGlyph, 300);
 </script>
 
 </body>
