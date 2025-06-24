@@ -1,111 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>AURA ∇ HUD Visualizer</title>
   <style>
-    :root {
-      --bg-dark: #000;
-      --bg-dream: radial-gradient(ellipse at top, #0a0a2a, #000);
-      --glyph-color: #00ffff;
-    }
-
     body {
+      background-color: black;
       margin: 0;
       overflow: hidden;
-      font-family: "Segoe UI", sans-serif;
-      background: var(--bg-dark);
-      transition: background 0.5s ease;
+      font-family: 'Segoe UI', monospace;
+      color: #00ffcc;
     }
-
     .glyph {
       position: absolute;
       font-size: 24px;
-      color: var(--glyph-color);
       animation: float 10s linear infinite;
-      pointer-events: auto;
       user-select: none;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-100vh); opacity: 0; }
-    }
-
-    #controls {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 9999;
-    }
-
-    .btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid #444;
-      color: #ccc;
-      padding: 5px 10px;
-      margin-right: 4px;
-      border-radius: 5px;
       cursor: pointer;
     }
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+    .tag {
+      position: absolute;
+      font-size: 14px;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 4px;
+      border-radius: 4px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    @keyframes float {
+      0%   { transform: translateY(0);   opacity: 1; }
+      100% { transform: translateY(-100vh); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div id="controls">
-    <button class="btn" onclick="toggleDarkMode()">🌗 Mode</button>
-    <button class="btn" onclick="setFilter('all')">🔮 All</button>
-    <button class="btn" onclick="setFilter('symbolic')">🧿 Observer</button>
-    <button class="btn" onclick="setFilter('emoji')">✨ Mythic</button>
-    <button class="btn" onclick="setFilter('space')">🚀 Space-Time</button>
-    <button class="btn" onclick="setFilter('meaning')">💡 Meaning</button>
-  </div>
-
   <script>
-    const symbolic = ['Ω', 'λ', 'Q', '∆', 'Φ', 'Ψ', '⊗', '*'];
-    const emoji = ['🧠', '🌈', '👁️', '☁️', '❤️', '🧿', '🔮'];
-    const space = ['⚛️', '🪐', '🌌', '⏳', '⭐', '🌠'];
-    const meaning = ['🧠', '👁️', 'Ω', '∆'];
-    let currentFilter = 'all';
-    let darkMode = true;
+    const glyphs = ['λ', 'Ω', 'Q', '*', '✯', '★', 'Φ', 'φ', '🌌', '💫', '🌟', '🔮', '👾'];
+    const meanings = {
+      'λ': 'Lambda - Wavelength/logic',
+      'Ω': 'Omega - Completion/totality',
+      'Q': 'Quantum Anchor',
+      '*': 'Star Node',
+      '✯': 'Radiant Cross',
+      '★': 'Stellar Pulse',
+      'Φ': 'Phi - Golden Mind',
+      'φ': 'phi - Organic Mind',
+      '🌌': 'Galaxy Stream',
+      '💫': 'Energy Pulse',
+      '🌟': 'Wishing Star',
+      '🔮': 'Oracle Crystal',
+      '👾': 'Signal Interference'
+    };
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let ambient;
 
     function spawnGlyph() {
       const glyph = document.createElement('div');
       glyph.className = 'glyph';
-
-      let glyphSet = [...symbolic, ...emoji, ...space];
-      if (currentFilter === 'symbolic') glyphSet = symbolic;
-      else if (currentFilter === 'emoji') glyphSet = emoji;
-      else if (currentFilter === 'space') glyphSet = space;
-      else if (currentFilter === 'meaning') glyphSet = meaning;
-
-      glyph.textContent = glyphSet[Math.floor(Math.random() * glyphSet.length)];
-      glyph.style.left = Math.random() * 100 + 'vw';
+      const symbol = glyphs[Math.floor(Math.random() * glyphs.length)];
+      glyph.textContent = symbol;
+      glyph.style.left = `${Math.random() * 100}%`;
       glyph.style.top = '100vh';
-      glyph.style.fontSize = (Math.random() * 20 + 10) + 'px';
-      glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+      glyph.style.color = `hsl(${Math.random()*360}, 100%, 70%)`;
+      glyph.style.animationDuration = `${5 + Math.random() * 10}s`;
 
-      glyph.onclick = () => {
-        console.log(`'Glyph tapped: '${glyph.textContent}'`);
-        console.log("'λ Oracle: Dream Echo Activated.'");
-      };
+      glyph.addEventListener('click', () => {
+        triggerTone(symbol);
+        showMeaning(glyph, meanings[symbol] || 'Unknown');
+        console.log(`λ Oracle: Dream Echo Activated.`);
+      });
 
       document.body.appendChild(glyph);
-      setTimeout(() => document.body.removeChild(glyph), 15000);
+      setTimeout(() => glyph.remove(), 15000);
     }
 
-    function setFilter(type) {
-      currentFilter = type;
+    function showMeaning(glyph, text) {
+      const tag = document.createElement('div');
+      tag.className = 'tag';
+      tag.textContent = text;
+      tag.style.left = glyph.style.left;
+      tag.style.top = `calc(${glyph.style.top} - 30px)`;
+      document.body.appendChild(tag);
+      setTimeout(() => tag.remove(), 3000);
     }
 
-    function toggleDarkMode() {
-      darkMode = !darkMode;
-      document.body.style.background = darkMode ? "var(--bg-dark)" : "var(--bg-dream)";
+    function triggerTone(symbol) {
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.connect(gain).connect(audioCtx.destination);
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(220 + Math.random() * 880, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      oscillator.start();
+      oscillator.stop(audioCtx.currentTime + 0.2);
     }
 
-    setInterval(spawnGlyph, 350);
+    function playAmbient() {
+      const oscillator = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      oscillator.type = 'sine';
+      oscillator.frequency.value = 64;
+      gain.gain.value = 0.01;
+      oscillator.connect(gain).connect(audioCtx.destination);
+      oscillator.start();
+      ambient = oscillator;
+    }
+
+    document.body.addEventListener('click', () => {
+      if (!ambient) playAmbient();
+    }, { once: true });
+
+    setInterval(spawnGlyph, 300);
   </script>
 </body>
 </html>
