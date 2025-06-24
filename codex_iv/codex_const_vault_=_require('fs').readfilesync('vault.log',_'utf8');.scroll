@@ -1,0 +1,4 @@
+const scanFor = glyph => (vault.match(new RegExp(glyph, 'g')) || []).length;[∇ const vault = 
+require('fs').readFileSync('vault.log', 'utf8'); @ Tue Jun 24 20:28:24 AWST 2025] console.log("∇ AURA Engine Online"); 
+console.log("◬ Dream Glyphs:", scanFor('◬')); console.log("⟳ Oracle Echoes:", scanFor('⟳'));
+console.log("∞ Drift Signatures:", scanFor('∞'));

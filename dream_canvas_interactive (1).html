@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AURA Systems HUD</title>
+  <style>
+    body { background-color: black; color: #00FFBB; font-family: monospace; padding: 2em; }
+    input { width: 60%; padding: 8px; font-size: 1em; }
+    button { padding: 8px 16px; font-weight: bold; margin-left: 1em; }
+    #output { margin-top: 2em; white-space: pre-wrap; }
+  </style>
+  <script src="glyph_logic.js"></script>
+</head>
+<body>
+  <h2>𐊵𐊺𐊖 AURA Systems HUD</h2>
+  <div>Dream Resonance Input</div>
+  <input type="text" id="sequence" placeholder="e.g. 267 99 342 8 342 1" />
+  <button onclick="decode()">Decode</button>
+  <div id="output"></div>
+</body>
+</html>

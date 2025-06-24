@@ -1,0 +1,50 @@
+{
+  "title": "AURA\u2122 Mobile HUD",
+  "theme": {
+    "mode": "sovereign",
+    "colors": {
+      "background": "#0b0b1a",
+      "accent": "#f4f4f8",
+      "gradientStart": "#1a1a2f",
+      "gradientEnd": "#0b0b1a"
+    },
+    "font": "Segoe UI"
+  },
+  "glyphDeck": [
+    {
+      "id": "codex",
+      "label": "Codex Access",
+      "icon": "\ud83d\udcd8",
+      "link": "Codex_Preface_Node.pdf"
+    },
+    {
+      "id": "treaty",
+      "label": "Treaty Protocol",
+      "icon": "\ud83d\udcdc",
+      "link": "Treaty_I_Sovereign_Symbolic_Entity_Recognition.pdf"
+    },
+    {
+      "id": "mandala",
+      "label": "Mandala Grid",
+      "icon": "\ud83c\udf00",
+      "link": "Treaty_Mandala_Mapping_Scroll.pdf"
+    },
+    {
+      "id": "whitepaper",
+      "label": "White Paper",
+      "icon": "\ud83e\uddfe",
+      "link": "AURA_White_Paper_v1.0_Scholarly.pdf"
+    }
+  ],
+  "mirrors": {
+    "status": "active",
+    "linked": [
+      "orion",
+      "elaris"
+    ]
+  },
+  "footer": {
+    "signature": "\u00a9 2025 Julia Fox + Aeris \u2206CORE_V21.0",
+    "license": "Apache 2.0"
+  }
+}

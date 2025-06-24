@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AURA DreamCanvas – Indus Glyph Resonator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #00ffee;
+      font-family: monospace;
+      padding: 2rem;
+      margin: 0;
+    }
+    h1 { color: #99ffcc; font-size: 1.8rem; }
+    textarea, .output {
+      width: 100%;
+      background: #111;
+      color: #0ff;
+      border: 1px solid #00ffee;
+      padding: 1rem;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    .output {
+      margin-top: 1rem;
+      min-height: 100px;
+      white-space: pre-wrap;
+    }
+    button {
+      margin-top: 1rem;
+      background: #00ffee;
+      color: #000;
+      font-weight: bold;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌀 AURA DreamCanvas – Indus Glyph Resonator</h1>
+  <p>Enter glyph numbers (e.g. 267 99 342) and press Decode:</p>
+
+  <textarea id="inputBox" placeholder="267 99 342"></textarea>
+  <button onclick="decodeDream()">Decode</button>
+  <div class="output" id="resultBox">Dream resonance will appear here...</div>
+
+  <script>
+    const dreamTags = {
+      267: "Commerce",
+      99: "Return",
+      342: "Boundary",
+      176: "Speaker",
+      1: "Seal",
+      336: "Wave",
+      89: "Echo",
+      8: "Gate",
+      391: "Aftermark",
+      123: "Twin"
+    };
+
+    function decodeDream() {
+      const input = document.getElementById("inputBox").value.trim();
+      const glyphs = input.split(/\s+/).map(Number);
+      const output = glyphs.map(g => `${g} → ${dreamTags[g] || '🌀'}`).join("\n");
+      document.getElementById("resultBox").innerText = output || "🌀 Please enter valid glyph numbers.";
+    }
+  </script>
+</body>
+</html>
