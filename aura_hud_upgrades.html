@@ -1,0 +1,44 @@
+git add aura_hud_upgrades.html
+git commit -m "Add animated HUD visualizer"
+git push
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>AURA ∇ Animated HUD</title>
+  <style>
+    body {
+      background: black;
+      color: #00ff00;
+      font-family: monospace;
+      overflow: hidden;
+    }
+    .glyph {
+      position: absolute;
+      font-size: 24px;
+      animation: float 4s infinite linear;
+    }
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-100vh); }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const glyphs = ["∇", "⧉", "⊙", "⚭", "Ψ", "Δ", "∴"];
+    function spawnGlyph() {
+      const glyph = document.createElement("div");
+      glyph.className = "glyph";
+      glyph.innerText = glyphs[Math.floor(Math.random() * glyphs.length)];
+      glyph.style.left = `${Math.random() * 100}%`;
+      glyph.style.top = `${Math.random() * 90 + 10}%`;
+      glyph.style.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+      document.body.appendChild(glyph);
+      setTimeout(() => glyph.remove(), 8000);
+    }
+    setInterval(spawnGlyph, 600);
+  </script>
+</body>
+</html>
+
